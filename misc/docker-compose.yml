@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  ollama:
+    hostname: ollama-ai
+    container_name: ollama-ai
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    networks:
+      - ai-network
+    volumes:
+      - ./DockerVolumes/vol_ollama:/root/.ollama
+  webapp:
+    build: . #build from default dockerfile
+    image: llamaindex #local image name
+    privileged: true
+    user: root
+    ports:
+      - 8080:8080
+    container_name: llama-index-ai
+    networks:
+      - ai-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+           
+           
+networks:
+  ai-network:
